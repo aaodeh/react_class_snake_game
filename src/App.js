@@ -48,7 +48,7 @@ export default function App() {
     let head = newSnake[newSnake.length - 1];
 
     if (head[0] == food[0] && head[1] == food[1]) {
-      setSpeed((prev) => prev - 10);
+      setSpeed((prev) => (prev > 10 ? prev - 10 : 10));
       newSnake.push([]);
 
       setFood(randomFood());
@@ -87,7 +87,7 @@ export default function App() {
           ></div>
         </div>
         <h2>snake size: {snake.length}</h2>
-        <h2>snake speed: {speed}</h2>
+        <h2>snake speed: {(300 - speed) / 10 + 1}</h2>
       </div>
     </>
   );
