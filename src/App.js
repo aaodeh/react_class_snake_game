@@ -8,14 +8,25 @@ export default function App() {
     [4, 0],
     [6, 0]
   ]);
-
+  const [speed, setSpeed] = useState(300);
   const [direction, setDirection] = useState("RIGHT");
+
+  const randomFood = () => {
+    let location = [
+      Math.floor(Math.random() * 49) * 2,
+      Math.floor(Math.random() * 49) * 2
+    ];
+
+    return location;
+  };
+
+  const [food, setFood] = useState(randomFood());
 
   useEffect(() => {
     let interval = setInterval(() => {
       moveSnake();
       document.onkeydown = determineDirection;
-    }, 300);
+    }, speed);
 
     return () => clearInterval(interval);
   });
@@ -36,6 +47,13 @@ export default function App() {
     let newSnake = snake.map((x) => x);
     let head = newSnake[newSnake.length - 1];
 
+    if (head[0] == food[0] && head[1] == food[1]) {
+      setSpeed((prev) => prev - 10);
+      newSnake.push([]);
+
+      setFood(randomFood());
+    }
+
     if (direction == "UP") {
       head = [head[0], head[1] - 2];
     } else if (direction == "DOWN") {
@@ -48,8 +66,6 @@ export default function App() {
 
     newSnake.push(head);
     newSnake.shift();
-
-    console.log(head);
 
     setSnake(newSnake);
   };
@@ -64,7 +80,14 @@ export default function App() {
               style={{ top: `${s[1]}%`, left: `${s[0]}%` }}
             ></div>
           ))}
+
+          <div
+            className="food-cell"
+            style={{ top: `${food[1]}%`, left: `${food[0]}%` }}
+          ></div>
         </div>
+        <h2>snake size: {snake.length}</h2>
+        <h2>snake speed: {speed}</h2>
       </div>
     </>
   );
