@@ -12,9 +12,10 @@ export default function App() {
   const [direction, setDirection] = useState("RIGHT");
 
   useEffect(() => {
-    document.onkeydown = determineDirection;
-
-    let interval = setInterval(() => moveSnake(), 300);
+    let interval = setInterval(() => {
+      moveSnake();
+      document.onkeydown = determineDirection;
+    }, 300);
 
     return () => clearInterval(interval);
   });
